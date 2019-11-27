@@ -12,16 +12,12 @@
 #include <time.h>
 #include <errno.h>
 #include "libmodbus/src/modbus.h"
+#include <iostream>
 void test() {
 	//Create a new RTU context with proper serial parameters (in this example,
-	//device name /dev/ttyS0, baud rate 9600, no parity bit, 8 data bits, 1 stop bit)
-
-	char serialPort[5] = "COM1";
-	const int numberOfRegistersToRead = 25;
-	uint16_t reg[numberOfRegistersToRead];// will store read registers values
-
-	int registerAddrToWrite = 1;
-	uint16_t valueToWriteToRegister = 999;
+//device name /dev/ttyS0, baud rate 9600, no parity bit, 8 data bits, 1 stop bit)
+	//char serialPort[9] = "\\\\.\\COM2";
+	char serialPort[5] = "COM7";
 
 	modbus_t* ctx = modbus_new_rtu(serialPort, 9600, 'N', 8, 1);
 	if (!ctx) {
@@ -36,27 +32,19 @@ void test() {
 	}
 
 	//Set the Modbus address of the remote slave (to 3)
-	modbus_set_slave(ctx, 3);
+	modbus_set_slave(ctx, 1);
 
+	uint16_t reg[5];// will store read registers values
 
-	
-
-	//read registers
-	int num = modbus_read_registers(ctx, 1, numberOfRegistersToRead, reg);
-	if (num != numberOfRegistersToRead) {// number of read registers is not the one expected
+	//Read 5 holding registers starting from address 10
+	int num = modbus_read_registers(ctx, 1, 5, reg);
+  	if (num ==-1) {// number of read registers is not the one expected		
 		fprintf(stderr, "Failed to read: %s\n", modbus_strerror(errno));
 	}
-	else {
-		for (int i = 0; i < numberOfRegistersToRead; i++) {
-			printf("\nRegister(%d): %d",i+1, reg[i]);
-		}
-	}
 
+	modbus_write_register(ctx, 0, 6969);
 
-	//write registers
-	modbus_write_register(ctx, registerAddrToWrite, valueToWriteToRegister);
-
-
+	std::cout << "\n" << reg[1] << "\n";
 
 	modbus_close(ctx);
 	modbus_free(ctx);
