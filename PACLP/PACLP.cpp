@@ -42,7 +42,11 @@ uint16_t readRegisters(int registerAddr) {
 }
 
 void writeRegister(int registerAddr, uint16_t value) {
-	modbus_write_register(ctx, registerAddr, value);
+
+	int num = modbus_write_register(ctx, registerAddr, value);
+	if (num == -1) {
+		fprintf(stderr, "Failed to write: %s\n", modbus_strerror(errno));
+	}
 }
 
 void closeConnection() {
@@ -72,5 +76,7 @@ int main()
 	writeRegister(0, 'L');
 
 	closeConnection();
+
+	//MODBUS_FC_READ_HOLDING_REGISTERS
 
 }
