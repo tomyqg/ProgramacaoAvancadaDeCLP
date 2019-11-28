@@ -11,7 +11,7 @@
 #include <iostream>
 
 
-char serialPort[5] = "COM7";
+char serialPort[6] = "COM7";
 int baudRate = 9600;
 modbus_t* ctx = NULL;
 
@@ -50,12 +50,24 @@ void closeConnection() {
 	modbus_free(ctx);
 }
 
+void chooseConnectionInfo() {
+	std::cout << "Digite a porta a se conectar (Recomendado COM1):\n";
+	std::cin >> serialPort;
+	std::cout << "\n";
+
+	std::cout << "Digite BaudRate: (Recomendado 9600):\n";
+	std::cin >> baudRate;
+	std::cout << "\n";
+}
+
+
 int main()
 {
+	chooseConnectionInfo();
 	setUpSerialConnection();
 
 	uint16_t registerRead = readRegisters(0);
-	std::cout << "\n" << registerRead << "\n";
+	std::cout << "\nValor lido: " << registerRead << "\n";
 
 	writeRegister(0, 'L');
 
