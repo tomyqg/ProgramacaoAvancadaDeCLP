@@ -160,6 +160,11 @@
       <Project>{498e0845-c7f4-438b-8ede-ef7fc9a74430}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="mainPage.htm">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

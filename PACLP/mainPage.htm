@@ -1,0 +1,101 @@
+<html>
+<head>
+
+    <title>Modbus PC-PLC communication</title>
+
+    <script type="text/javascript">
+        function runProgram()
+        {
+        var exe = '\"C:\\Users\\Lenovo\\Desktop\\testHelloW\\testHelloW\\Debug\\testHelloW.exe\"';
+
+        //serial
+        var serialPortValue = document.getElementById("serialPort").value;
+
+        //baud rate
+        var baudRateValue = document.querySelector('input[name="baudRate"]:checked').value;
+
+        //leds to read
+        var ledsToRead = getCheckedBoxes("toread");
+
+        //to write
+        var ledToWrite = document.querySelector('input[name="writeValue"]:checked').value;
+        var ledValueToWrite = document.getElementById("inputToWriteLed").value;
+
+        //alert(ledToWrite+': '+ledValueToWrite);
+
+
+        var shell = new ActiveXObject("WScript.Shell");
+        shell.Run(exe+' '+serialPortValue+' '+baudRateValue+' '+ledsToRead+' '+ledToWrite+' '+ledValueToWrite);
+        }
+
+        function getCheckedBoxes(chkboxName) {
+        var checkboxes = document.getElementsByName(chkboxName);
+        var checkboxesChecked = [];
+        // loop over them all
+        for (var i=0; i<checkboxes.length; i++) {
+        // And stick the checked ones onto an array...
+        if (checkboxes[i].checked) {
+        checkboxesChecked.push(checkboxes[i].value);
+        }
+        }
+        // Return the array if it is non-empty, or null
+        return checkboxesChecked.length > 0 ? checkboxesChecked : null;
+        }
+    </script>
+
+</head>
+
+
+
+<body>
+    <h1>Modbus PC-PLC communication</h1>
+
+    <h4>Serial configuration</h4>
+    <form>
+        Serial port:
+        <input type="text" id="serialPort" value="COM1">
+    </form>
+    Baud rate:
+    <form>
+        <input type="radio" id="baudRate" name="baudRate" value="300"> 300
+        <input type="radio" id="baudRate" name="baudRate" value="600"> 600
+        <input type="radio" id="baudRate" name="baudRate" value="1200"> 1200
+        <input type="radio" id="baudRate" name="baudRate" value="2400"> 2400
+        <input type="radio" id="baudRate" name="baudRate" value="4800"> 4800
+        <input type="radio" id="baudRate" name="baudRate" value="9600" checked> 9600
+        <input type="radio" id="baudRate" name="baudRate" value="14400"> 14400
+        <input type="radio" id="baudRate" name="baudRate" value="19200"> 19200
+        <input type="radio" id="baudRate" name="baudRate" value="38400"> 38400
+        <input type="radio" id="baudRate" name="baudRate" value="56000"> 56000
+        <input type="radio" id="baudRate" name="baudRate" value="57600"> 57600
+        <input type="radio" id="baudRate" name="baudRate" value="115200"> 115200
+        <input type="radio" id="baudRate" name="baudRate" value="128000"> 128000
+        <input type="radio" id="baudRate" name="baudRate" value="256000"> 256000
+    </form><br>
+
+
+    <h4>Variables to read</h4>
+    <form>
+        <input type="checkbox" id="rled1" name="toread" value="rled"> R LED
+        <input type="checkbox" id="yled1" name="toread" value="yled"> Y LED
+        <input type="checkbox" id="gled1" name="toread" value="gled"> G LED
+    </form><br>
+
+    <h4>Write value</h4>
+    Select variable to write:
+    <form>
+        <input type="radio" id="writeValue" name="writeValue" value="none" checked> NONE
+        <input type="radio" id="writeValue" name="writeValue" value="rled"> R LED
+        <input type="radio" id="writeValue" name="writeValue" value="yled"> Y LED
+        <input type="radio" id="writeValue" name="writeValue" value="gled"> G LED
+    </form>
+    Type value to write:
+    <form>
+        <input type="text" id="inputToWriteLed" name="inputToWriteLed" value="0">
+    </form>
+
+    <button type="button" onclick="javascript:runProgram()">Run</button>
+
+</body>
+
+</html>

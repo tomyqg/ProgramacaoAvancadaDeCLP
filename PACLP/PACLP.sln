@@ -7,7 +7,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PACLP", "PACLP.vcxproj", "{
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "modbus", "libmodbus\src\win32\modbus.vcxproj", "{498E0845-C7F4-438B-8EDE-EF7FC9A74430}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "ProgramacaoAvancadaDeCLPs", "..\ProgramacaoAvancadaDeCLPs\ProgramacaoAvancadaDeCLPs.vdproj", "{BC0784E7-4EF7-415E-84F7-D531C2146137}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "PA_PLC", "..\PA_PLC\PA_PLC.vdproj", "{4DF9B5A8-8FA8-4ED6-9897-44D386B54638}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,11 +33,11 @@ Global
 		{498E0845-C7F4-438B-8EDE-EF7FC9A74430}.Release|x64.Build.0 = Release|x64
 		{498E0845-C7F4-438B-8EDE-EF7FC9A74430}.Release|x86.ActiveCfg = Release|Win32
 		{498E0845-C7F4-438B-8EDE-EF7FC9A74430}.Release|x86.Build.0 = Release|Win32
-		{BC0784E7-4EF7-415E-84F7-D531C2146137}.Debug|x64.ActiveCfg = Debug
-		{BC0784E7-4EF7-415E-84F7-D531C2146137}.Debug|x86.ActiveCfg = Debug
-		{BC0784E7-4EF7-415E-84F7-D531C2146137}.Release|x64.ActiveCfg = Release
-		{BC0784E7-4EF7-415E-84F7-D531C2146137}.Release|x86.ActiveCfg = Release
-		{BC0784E7-4EF7-415E-84F7-D531C2146137}.Release|x86.Build.0 = Release
+		{4DF9B5A8-8FA8-4ED6-9897-44D386B54638}.Debug|x64.ActiveCfg = Debug
+		{4DF9B5A8-8FA8-4ED6-9897-44D386B54638}.Debug|x86.ActiveCfg = Debug
+		{4DF9B5A8-8FA8-4ED6-9897-44D386B54638}.Release|x64.ActiveCfg = Release
+		{4DF9B5A8-8FA8-4ED6-9897-44D386B54638}.Release|x86.ActiveCfg = Release
+		{4DF9B5A8-8FA8-4ED6-9897-44D386B54638}.Release|x86.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
