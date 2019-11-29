@@ -38,19 +38,23 @@ void setUpSerialConnection() {
 	modbus_set_slave(ctx, 1);
 }
 
-uint16_t readRegisters(int registerAddr) {
-	uint16_t reg[1];
-	int num = modbus_read_registers(ctx, registerAddr, 1, reg);
+int readRegisters(int registerAddr) {
+	uint8_t reg[1];
+	int num = modbus_read_bits(ctx, registerAddr, 1, reg);
 	if (num == -1) {
 		fprintf(stderr, "Failed to read: %s\n", modbus_strerror(errno));
 	}
 
-	return reg[0];
+	if (reg[0] >= 1)
+		return 1;
+	else
+		return 0;
+	//return reg[0];
 }
 
-void writeRegister(int registerAddr, uint16_t value) {
+void writeRegister(int registerAddr, bool value) {
 
-	int num = modbus_write_register(ctx, registerAddr, value);
+	int num = modbus_write_bit(ctx, registerAddr, value);
 	if (num == -1) {
 		fprintf(stderr, "Failed to write: %s\n", modbus_strerror(errno));
 	}
@@ -105,7 +109,7 @@ int main(int argc, char* argv[])
 
 	setUpSerialConnection();
 
-	std::cout << "******   debug   ******" << std::endl;
+	/*std::cout << "******   debug   ******" << std::endl;
 	std::cout << argv[1] << std::endl;
 	std::cout << argv[2] << std::endl;
 	std::cout << argv[3] << std::endl;
@@ -115,7 +119,7 @@ int main(int argc, char* argv[])
 	std::cout << baudRate << std::endl;
 	std::cout << ledsToRead << std::endl;
 	std::cout << ledToWrite << std::endl;
-	std::cout << ledValueToWrite << std::endl << std::endl << std::endl;
+	std::cout << ledValueToWrite << std::endl << std::endl << std::endl;*/
 
 
 
@@ -123,21 +127,30 @@ int main(int argc, char* argv[])
 
 	if (isSubstring("none",ledsToRead)) {
 		std::cout << "Values read:" << std::endl;
-		if (isSubstring("rled", ledsToRead))
-			std::cout << "Red LED: " << readRegisters(0) << std::endl;//registrador 0 -> LED vermelho
-		if (isSubstring("yled", ledsToRead))
-			std::cout << "Yellow LED: " << readRegisters(1) << std::endl;//registrador 1 -> LED amarelo
-		if (isSubstring("gled", ledsToRead))
-			std::cout << "Green LED: " << readRegisters(2) << std::endl;//registrador 2 -> LED verde
+		if (isSubstring("rled", ledsToRead) != -1) {
+			std::cout << "   Red LED: " << readRegisters(0) << std::endl;//registrador 0 -> LED vermelho
+		}
+			
+		if (isSubstring("yled", ledsToRead) != -1){
+			std::cout << "   Yellow LED: " << readRegisters(1) << std::endl;//registrador 1 -> LED amarelo
+		}
+			
+		if (isSubstring("gled", ledsToRead) != -1) {
+			std::cout << "   Green LED: " << readRegisters(2) << std::endl;//registrador 2 -> LED verde
+		}			
 	}
 		
 	if (isSubstring("none", ledToWrite)){
+		bool statusLED = FALSE;
+		if (ledValueToWrite >= 1)
+			statusLED = TRUE;
+
 		if (!isSubstring("rled",ledToWrite))
-			writeRegister(0, ledValueToWrite);//registrador 0 -> LED vermelho
+			writeRegister(0, statusLED);//registrador 0 -> LED vermelho
 		else if (!isSubstring("yled", ledToWrite))
-			writeRegister(1, ledValueToWrite);//registrador 1 -> LED amarelo
+			writeRegister(1, statusLED);//registrador 1 -> LED amarelo
 		else if (!isSubstring("gled", ledToWrite))
-			writeRegister(2, ledValueToWrite);//registrador 2 -> LED verde
+			writeRegister(2, statusLED);//registrador 2 -> LED verde
 
 		std::cout << std::endl << "Updated value:" << std::endl;
 		std::cout << ledToWrite << " updated successfully to " << ledValueToWrite << std::endl;
