@@ -16,7 +16,8 @@
 typedef int ssize_t;
 #endif
 #include <sys/types.h>
-#include "libmodbus/src/win32/config.h"
+#include "config.h"
+//#include "libmodbus/src/win32/config.h"
 
 #include "modbus.h"
 

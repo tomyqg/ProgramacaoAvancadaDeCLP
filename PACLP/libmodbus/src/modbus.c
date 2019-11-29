@@ -19,8 +19,8 @@
 #ifndef _MSC_VER
 #include <unistd.h>
 #endif
-
-#include "libmodbus/src/win32/config.h"
+#include "config.h"
+//#include "libmodbus/src/win32/config.h"
 
 #include "modbus.h"
 #include "modbus-private.h"

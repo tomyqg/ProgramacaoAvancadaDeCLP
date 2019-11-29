@@ -21,7 +21,8 @@
 #  include <arpa/inet.h>
 #endif
 
-#include "libmodbus/src/win32/config.h"
+#include "config.h"
+//#include "libmodbus1/src/win32/config.h"
 
 #include "modbus.h"
 
