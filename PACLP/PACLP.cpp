@@ -133,11 +133,11 @@ int main(int argc, char* argv[])
 		
 	if (isSubstring("none", ledToWrite)){
 		if (!isSubstring("rled",ledToWrite))
-			writeRegister(0, ledValueToWrite);
+			writeRegister(0, ledValueToWrite);//registrador 0 -> LED vermelho
 		else if (!isSubstring("yled", ledToWrite))
-			writeRegister(1, ledValueToWrite);
+			writeRegister(1, ledValueToWrite);//registrador 1 -> LED amarelo
 		else if (!isSubstring("gled", ledToWrite))
-			writeRegister(2, ledValueToWrite);
+			writeRegister(2, ledValueToWrite);//registrador 2 -> LED verde
 
 		std::cout << std::endl << "Updated value:" << std::endl;
 		std::cout << ledToWrite << " updated successfully to " << ledValueToWrite << std::endl;
