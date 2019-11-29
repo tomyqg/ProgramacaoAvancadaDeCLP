@@ -14,8 +14,8 @@
 #include <string>
 
 
-char serialPort[6] = "COM1";
-int baudRate = 19200;
+char serialPort[6] = "";
+int baudRate = 0;
 modbus_t* ctx = NULL;
 
 std::string ledsToRead = "";
@@ -61,6 +61,27 @@ void closeConnection() {
 	modbus_free(ctx);
 }
 
+int isSubstring(std::string s1, std::string s2)
+{
+	int M = s1.length();
+	int N = s2.length();
+
+	/* A loop to slide pat[] one by one */
+	for (int i = 0; i <= N - M; i++) {
+		int j;
+
+		/* For current index i, check for pattern match */
+		for (j = 0; j < M; j++)
+			if (s2[i + j] != s1[j])
+				break;
+
+		if (j == M)
+			return i;
+	}
+
+	return -1;
+}
+
 int main(int argc, char* argv[])
 {
 	if (argc == 1) {
@@ -69,7 +90,7 @@ int main(int argc, char* argv[])
 	}
 
 	//porta serial
-	strcpy(argv[1], serialPort);
+	strcpy(serialPort, argv[1]);
 	
 	//baud rate
 	baudRate = atoi(argv[2]);
@@ -79,48 +100,52 @@ int main(int argc, char* argv[])
 
 	//LED to write and its value
 	ledToWrite = argv[4];
-	ledValueToWrite = atoi(argv[4]);
+	ledValueToWrite = atoi(argv[5]);
 		
 
 	setUpSerialConnection();
 
-	uint16_t registerReadR = -1;
-	uint16_t registerReadY = -1;
-	uint16_t registerReadG = -1;
-	if (ledsToRead.find('rled'))
-		registerReadR = readRegisters(0); //registrador 0 -> LED vermelho
-	if (ledsToRead.find('yled'))
-		registerReadY = readRegisters(1); //registrador 1 -> LED amarelo
-	if (ledsToRead.find('gled'))
-		registerReadG = readRegisters(2); //registrador 2 -> LED verde
+	std::cout << "******   debug   ******" << std::endl;
+	std::cout << argv[1] << std::endl;
+	std::cout << argv[2] << std::endl;
+	std::cout << argv[3] << std::endl;
+	std::cout << argv[4] << std::endl << std::endl;
 
-
-	std::cout << "\n--------------------------------------------------------\n" << "Returned values:" <<  std::endl;
-	if (registerReadR != -1)
-		std::cout << "Red LED: " << registerReadR << std::endl;
-	if (registerReadR != -1)
-		std::cout << "Yellow LED: " << registerReadY << std::endl;
-	if (registerReadR != -1)
-		std::cout << "Green LED: " << registerReadG << std::endl;
+	std::cout << serialPort << std::endl;
+	std::cout << baudRate << std::endl;
+	std::cout << ledsToRead << std::endl;
+	std::cout << ledToWrite << std::endl;
+	std::cout << ledValueToWrite << std::endl << std::endl << std::endl;
 
 
 
-	if (ledToWrite.find("rled"))
-		writeRegister(0, ledValueToWrite);
-	else if (ledToWrite.find("yled"))
-		writeRegister(1, ledValueToWrite);
-	else if (ledToWrite.find("gled"))
-		writeRegister(2, ledValueToWrite);
+	std::cout <<"******   Modbus PC-PLC communication   ******" << std::endl;
 
-	std::cout << std::endl << "\n--------------------------------------------------------\n" << "Returned values:" << std::endl;
-	if (!ledToWrite.find("none"))
+	if (isSubstring("none",ledsToRead)) {
+		std::cout << "Values read:" << std::endl;
+		if (isSubstring("rled", ledsToRead))
+			std::cout << "Red LED: " << readRegisters(0) << std::endl;//registrador 0 -> LED vermelho
+		if (isSubstring("yled", ledsToRead))
+			std::cout << "Yellow LED: " << readRegisters(1) << std::endl;//registrador 1 -> LED amarelo
+		if (isSubstring("gled", ledsToRead))
+			std::cout << "Green LED: " << readRegisters(2) << std::endl;//registrador 2 -> LED verde
+	}
+		
+	if (isSubstring("none", ledToWrite)){
+		if (!isSubstring("rled",ledToWrite))
+			writeRegister(0, ledValueToWrite);
+		else if (!isSubstring("yled", ledToWrite))
+			writeRegister(1, ledValueToWrite);
+		else if (!isSubstring("gled", ledToWrite))
+			writeRegister(2, ledValueToWrite);
+
+		std::cout << std::endl << "Updated value:" << std::endl;
 		std::cout << ledToWrite << " updated successfully to " << ledValueToWrite << std::endl;
-
-
-
+	}
+	
 	closeConnection();
 
-	int aux = 0;
+	int aux = 0; //apenas para a janela não se fechar abruptamente
 	std::cin >> aux;
 
 }

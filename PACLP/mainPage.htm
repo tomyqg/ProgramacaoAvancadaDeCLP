@@ -16,16 +16,19 @@
 
         //leds to read
         var ledsToRead = getCheckedBoxes("toread");
+        if (ledsToRead=="")
+        ledsToRead = "none";
 
         //to write
         var ledToWrite = document.querySelector('input[name="writeValue"]:checked').value;
         var ledValueToWrite = document.getElementById("inputToWriteLed").value;
 
-        //alert(ledToWrite+': '+ledValueToWrite);
+        //alert(ledsToRead);
 
 
         var shell = new ActiveXObject("WScript.Shell");
-        shell.Run(exe+' '+serialPortValue+' '+baudRateValue+' '+ledsToRead+' '+ledToWrite+' '+ledValueToWrite);
+        var auxxx = exe+' '+serialPortValue+' '+baudRateValue+' '+ledsToRead+' '+ledToWrite+' '+ledValueToWrite;
+        shell.Run(auxxx);
         }
 
         function getCheckedBoxes(chkboxName) {
@@ -39,7 +42,12 @@
         }
         }
         // Return the array if it is non-empty, or null
-        return checkboxesChecked.length > 0 ? checkboxesChecked : null;
+        var aux1 =  checkboxesChecked.length > 0 ? checkboxesChecked : null;
+        var aux2='';
+        if(aux1 != null)
+        aux1.forEach(function(obj){aux2=aux2+'|'+obj})
+        return aux2;
+
         }
     </script>
 
